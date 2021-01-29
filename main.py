@@ -1,6 +1,8 @@
 # Question: Can't we just compute W? Am I correct as to what it represents
 # What exactly is J? Why does it go  to n-1?
 import numpy as np
+from wvg import WVG
+
 # Generates the dynamic programming table required in order to 
 # compute the Shapley value in weighted voting games.
 
@@ -30,6 +32,3 @@ def create_DP_table(n, weights,W):
                     table[j][w][s] = table[j-1][w][s]
 
     return table
-
-test = create_DP_table(3, [1,2,3], 6)
-print(test)
