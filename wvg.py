@@ -1,7 +1,7 @@
 import numpy as np
 
 # Weighted Voting Game Class
-class WVG:
+class wvg:
     # Initializes WVG. Weights and Quota are optional and defaulted to 0 if not provided
     # Num_players is required
     def __init__(self, num_players, weights = None, quota = None):
