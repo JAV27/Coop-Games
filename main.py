@@ -1,5 +1,4 @@
-# Question: Can't we just compute W? Am I correct as to what it represents
-# What exactly is J? Why does it go  to n-1?
+# Future thing to do: Test cases? Good way to test whats happening. Might need help coming up with test cases though
 import numpy as np
 from wvg import wvg
 
@@ -13,6 +12,10 @@ from wvg import wvg
 # n: Int - Number of players 
 # weights: [Int] - Weights associated with each player
 # W: Int - w(N)
+# TODO:
+# Remove n and W
+# Check if w-weights[j] < 0
+# Create test case file
 def create_DP_table(n, weights,W):
 
     # Create table with all zeroes
@@ -34,23 +37,31 @@ def create_DP_table(n, weights,W):
     return table
 
 # What exactly is this doing? I got the jist but want to be more clear so I can document
+# Computes raw shapley value
+# Gets how many permutations the last player is pivotal in
 def get_num_of_permutations_last(wvg):
     W = 0
 
+    # Computes w(N)
     for i in range(wvg.get_num_players()):
         W += wvg.get_weights[i]
 
+    # Instantiated DP tablee
     table = create_DP_table(wvg.get_num_players(), wvg.get_weights(), W)
 
     num_of_permutations = []
 
-    for w in range(W+1):
+    # How many permutations where player is pivotal and weight of other players is w
+    for w in range(wvg.get_quote()-wvg.get_weights[wvg.get_num_players()], wvg.get_quota()):
         num_of_permutations[w] = 0
 
+        # S is subsets of size s
         for s in range(wvg.get_num_players()):
+            # Look at 2nd to last player and all sets of different sizes and weights
             num_of_permutations[w] += table[wvg.get_num_players()-2][w][s]*np.math.factorial(s)*np.math.factorial(wvg.get_num_players()-s-1)
     
     # Why is there a big for loop? do I need it?
+    # Todo: check out del
     del table
 
     return num_of_permutations
