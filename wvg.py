@@ -12,7 +12,7 @@ class wvg:
         if self.num_players != len(self.weights):
             raise Exception("Weights array must be same size as num_players")
 
-        self.quota = 0 if quota == None else quota
+        self.quota = 0 if quota is None else quota
 
 
     # Getters
