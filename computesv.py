@@ -22,7 +22,7 @@ def create_DP_table(weights):
         W += weights[i]
 
     # Create table with all zeroes
-    table = np.zeros((n-1,W+1,n))
+    table = np.zeros((n-1,W+1,n), dtype=int)
 
     for j in range(n-1):
         table[j][0][0] = 1
