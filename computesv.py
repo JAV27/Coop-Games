@@ -50,7 +50,7 @@ def get_num_of_permutations_last(wvg):
 
     # How many permutations where player is pivotal and weight of other players is w
     # For every weight from q-w_of_last_player to q-1
-    for w in range(wvg.get_quote()-wvg.get_weights[wvg.get_num_players()], wvg.get_quota()):
+    for w in range(wvg.get_quota()-wvg.get_weights[wvg.get_num_players()], wvg.get_quota()):
         num_of_permutations[w] = 0
 
         # for every subset size
