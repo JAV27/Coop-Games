@@ -9,7 +9,7 @@ class TestWVG(unittest.TestCase):
     # Test if no quota is given that it is set to 0
     def test_no_quota_given(self):
         test_wvg = wvg([0,0,0,0,0])
-        self.assertEqual(test_wvg.get_quota(), 0)
+        self.assertEqual(test_wvg.get_quota(), 1)
 
     # Test if not giving a weights array promts a zero array
     def test_no_weights_array_given(self):
@@ -32,6 +32,12 @@ class TestWVG(unittest.TestCase):
 
         equality = np.array_equal([1,2,3,4,5], test_wvg.get_weights())        
         self.assertTrue(equality)
+    
+    def test_nothing_given(self):
+        test_wvg = wvg()
+        equality = np.array_equal([0], test_wvg.get_weights())  
+        self.assertTrue(equality)
+        self.assertEqual(1, test_wvg.get_quota())
     
 
 # Tests the create DP table function

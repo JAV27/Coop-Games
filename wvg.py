@@ -9,7 +9,7 @@ class wvg:
         
         self.num_players = len(self.weights)
 
-        self.quota = 0 if quota is None else quota
+        self.quota = 1 if quota is None else quota
 
 
     # Getters
