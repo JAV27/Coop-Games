@@ -2,16 +2,12 @@ import numpy as np
 
 # Weighted Voting Game Class
 class wvg:
-    # Initializes WVG. Weights and Quota are optional and defaulted to 0 if not provided
+    # Initializes WVG. Weights and Quota are optional and defaulted to [0],1 if not provided
     def __init__(self, weights = None, quota = None):
         
         self.weights = np.zeros((1), dtype=int) if weights is None else weights
         
         self.num_players = len(self.weights)
-
-        # Make sure there are same number of weights as players
-        #if self.num_players != len(self.weights):
-        #    raise Exception("Weights array must be same size as num_players")
 
         self.quota = 0 if quota is None else quota
 
