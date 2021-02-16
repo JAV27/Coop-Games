@@ -43,6 +43,9 @@ def create_DP_table(weights):
 # Gets how many permutations the last player is pivotal in
 def get_num_of_permutations_last(wvg):
 
+    if wvg.get_quota() == 0:
+        return 1/wvg.get_num_players()
+
     # Instantiated DP table
     table = create_DP_table(wvg.get_weights())
 
@@ -50,7 +53,7 @@ def get_num_of_permutations_last(wvg):
 
     # How many permutations where player is pivotal and weight of other players is w
     # For every weight from q-w_of_last_player to q-1
-    for w in range(wvg.get_quota()-wvg.get_weights[wvg.get_num_players()], wvg.get_quota()):
+    for w in range(max(wvg.get_quota()-wvg.get_weights[wvg.get_num_players()]), wvg.get_quota()):
         num_of_permutations[w] = 0
 
         # for every subset size
