@@ -49,19 +49,51 @@ def get_num_of_permutations_last(wvg):
     # Instantiated DP table
     table = create_DP_table(wvg.get_weights())
 
-    num_of_permutations = []
+    num_of_permutations = np.zeros((wvg.get_quota()), dtype=int)
 
     # How many permutations where player is pivotal and weight of other players is w
     # For every weight from q-w_of_last_player to q-1
-    for w in range(max(wvg.get_quota()-wvg.get_weights[wvg.get_num_players()]), wvg.get_quota()):
+    for w in range(wvg.get_quota()-wvg.get_weights()[wvg.get_num_players()-1], wvg.get_quota()):
+        print(w)
         num_of_permutations[w] = 0
 
         # for every subset size
         for s in range(wvg.get_num_players()):
             # Look at table for 2nd to last player at all w and s
             # Multiply by amount of combinations of that group of players
+            print(w)
+            print(s)
             num_of_permutations[w] += table[wvg.get_num_players()-2][w][s]*np.math.factorial(s)*np.math.factorial(wvg.get_num_players()-s-1)
     
     del table
 
     return num_of_permutations
+
+def get_num_of_permutation(wvg, i):
+
+    if i >= wvg.get_num_players():
+        raise IndexError("i is larger than number of players")
+
+    a = wvg.get_weights()[i]
+    weights = wvg.get_weights()
+
+    # Swap the last player with the ith player
+    weights[i] = weights[wvg.get_num_players()-1]
+    weights[wvg.get_num_players()-1] = a
+
+    wvg.set_weights(weights)
+
+    # Compute with new player as last
+    num_of_permutations = get_num_of_permutations_last(wvg)
+
+    # Swap back to original 
+    a = wvg.get_weights()[i]
+    weights = wvg.get_weights()
+
+    weights[i] = weights[wvg.get_num_players()-1]
+    weights[wvg.get_num_players()-1] = a
+
+    return num_of_permutations
+
+
+print(get_num_of_permutation(wvg([1,2,3,4,5], 15), 0))
