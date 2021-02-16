@@ -54,15 +54,12 @@ def get_num_of_permutations_last(wvg):
     # How many permutations where player is pivotal and weight of other players is w
     # For every weight from q-w_of_last_player to q-1
     for w in range(wvg.get_quota()-wvg.get_weights()[wvg.get_num_players()-1], wvg.get_quota()):
-        print(w)
         num_of_permutations[w] = 0
 
         # for every subset size
         for s in range(wvg.get_num_players()):
             # Look at table for 2nd to last player at all w and s
             # Multiply by amount of combinations of that group of players
-            print(w)
-            print(s)
             num_of_permutations[w] += table[wvg.get_num_players()-2][w][s]*np.math.factorial(s)*np.math.factorial(wvg.get_num_players()-s-1)
     
     del table
@@ -95,5 +92,13 @@ def get_num_of_permutation(wvg, i):
 
     return num_of_permutations
 
+def compute_shapley_value(wvg, i):
+    return np.sum(get_num_of_permutation(wvg, i))/np.math.factorial(wvg.get_num_players())
 
-print(get_num_of_permutation(wvg([1,2,3,4,5], 15), 0))
+print(get_num_of_permutation(wvg([1,2,3,4,5], 10), 3))
+
+total = 0
+for i in range(5):
+    total += compute_shapley_value(wvg([1,2,3,4,5], 10), i)
+
+print(total)
