@@ -1,5 +1,7 @@
 import numpy as np
 from wvg import wvg
+from itertools import combinations
+import math
 
 # Generates the dynamic programming table required in order to 
 # compute the Shapley value in weighted voting games.
@@ -49,7 +51,7 @@ def get_num_of_permutations_last(wvg):
     # Instantiated DP table
     table = create_DP_table(wvg.get_weights())
 
-    num_of_permutations = np.zeros((wvg.get_quota()), dtype=int)
+    num_of_permutations = np.zeros((wvg.get_quota()), dtype=np.float128)
 
     # How many permutations where player is pivotal and weight of other players is w
     # For every weight from q-w_of_last_player to q-1
@@ -60,7 +62,7 @@ def get_num_of_permutations_last(wvg):
         for s in range(wvg.get_num_players()):
             # Look at table for 2nd to last player at all w and s
             # Multiply by amount of combinations of that group of players
-            num_of_permutations[w] += table[wvg.get_num_players()-2][w][s]*np.math.factorial(s)*np.math.factorial(wvg.get_num_players()-s-1)
+            num_of_permutations[w] += float(table[wvg.get_num_players()-2][w][s])*float(np.math.factorial(s))*float(np.math.factorial(wvg.get_num_players()-s-1))
     
     del table
 
@@ -93,12 +95,50 @@ def get_num_of_permutation(wvg, i):
     return num_of_permutations
 
 def compute_shapley_value(wvg, i):
-    return np.sum(get_num_of_permutation(wvg, i))/np.math.factorial(wvg.get_num_players())
+    return np.sum(get_num_of_permutation(wvg, i))/float(np.math.factorial(wvg.get_num_players()))
 
-print(get_num_of_permutation(wvg([1,2,3,4,5], 10), 3))
+# arr: Set of items
+# k: size of the subsets to take
+# returns: Set of total sums for each subsets
+def get_all_subset_weights(arr, k):
+    all_subsets = np.array(list(combinations(arr, k)))
+    all_weights = [np.sum(arr) for arr in all_subsets]
+    
+    return all_weights
+
+# Computes the Shapley value of player i in wvg
+def brute_force_sv(wvg, i):
+
+    shapley_value = 0
+    quota = wvg.get_quota()
+    n = wvg.get_num_players()
+    player_value = wvg.get_weights()[i]
+    set_minus_i = wvg.get_weights()[:i] + wvg.get_weights()[i+1:]
+
+    # All numbers of subsets from 0 to n-1. Player is anywhere from first to last
+    for k in range(n):
+        inside_value = 0
+        # Every permutation of subset k
+        all_sums = get_all_subset_weights(set_minus_i, k)
+
+        for set_sum in all_sums:
+            if(set_sum < quota and set_sum + player_value >= quota):
+                inside_value += 1
+
+        inside_value = round(inside_value / math.comb(n-1, k), 3)
+        shapley_value += inside_value
+
+    return (shapley_value/n)
+
 
 total = 0
-for i in range(5):
-    total += compute_shapley_value(wvg([1,2,3,4,5], 10), i)
+for i in range(20):
+    total += compute_shapley_value(wvg([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 30), i)
 
-print(total)
+print("Total: " + str(total))
+
+total = 0
+for i in range(20):
+    total += brute_force_sv(wvg([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 30), i)
+
+print("Total: " + str(round(total, 3)))
