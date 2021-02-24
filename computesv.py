@@ -55,7 +55,7 @@ def get_num_of_permutations_last(wvg):
 
     # How many permutations where player is pivotal and weight of other players is w
     # For every weight from q-w_of_last_player to q-1
-    for w in range(wvg.get_quota()-wvg.get_weights()[wvg.get_num_players()-1], wvg.get_quota()):
+    for w in range(max(0,wvg.get_quota()-wvg.get_weights()[wvg.get_num_players()-1]), wvg.get_quota()):
         num_of_permutations[w] = 0
 
         # for every subset size
@@ -132,8 +132,8 @@ def brute_force_sv(wvg, i):
 
 
 total = 0
-for i in range(20):
-    total += compute_shapley_value(wvg([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 30), i)
+for i in range(25):
+    total += compute_shapley_value(wvg([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25], 20), i)
 
 print("Total: " + str(total))
 
