@@ -58,7 +58,22 @@ class TestCreateDPTable(unittest.TestCase):
         equality = np.array_equal(result, correct_table)
         self.assertTrue(equality)
 
+class TestComputeSV(unittest.TestCase):
+    def test_total_CSV(self):
+        test_wvg = wvg([1,2,3,4,5,6,7,8,9,10], 15)
+        total = 0
+        for i in range(test_wvg.get_num_players()):
+            total += computesv.compute_shapley_value(test_wvg, i)
 
+        self.assertEqual(round(total, 3), 1)
+
+    def test_total_brute_force(self):
+        test_wvg = wvg([1,2,3,4,5], 8)
+        total = 0
+        for i in range(test_wvg.get_num_players()):
+            total += computesv.brute_force_sv(test_wvg, i)
+
+        self.assertEqual(round(total, 3), 1)
 
 if __name__ == '__main__':
     unittest.main()

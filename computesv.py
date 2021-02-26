@@ -136,20 +136,3 @@ def brute_force_sv(wvg, i):
         shapley_value += inside_value
 
     return (shapley_value/n)
-
-
-
-
-print(compute_shapley_value(wvg([1,2,3,4,5], 20), 3))
-
-total = 0
-for i in range(25):
-    total += compute_shapley_value(wvg([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25], 20), i)
-
-print("Total: " + str(total))
-
-total = 0
-for i in range(20):
-    total += brute_force_sv(wvg([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 30), i)
-
-print("Total: " + str(round(total, 3)))
