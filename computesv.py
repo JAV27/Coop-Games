@@ -45,8 +45,15 @@ def create_DP_table(weights):
 # Gets how many permutations the last player is pivotal in
 def get_num_of_permutations_last(wvg):
 
+    # Get w(N)
+    W = 0
+    for i in range(len(wvg.get_weights())):
+        W += wvg.get_weights()[i]
+
     if wvg.get_quota() == 0:
         return 1/wvg.get_num_players()
+    elif  wvg.get_quota() > W:
+        return 0
 
     # Instantiated DP table
     table = create_DP_table(wvg.get_weights())
@@ -130,6 +137,10 @@ def brute_force_sv(wvg, i):
 
     return (shapley_value/n)
 
+
+
+
+print(compute_shapley_value(wvg([1,2,3,4,5], 20), 3))
 
 total = 0
 for i in range(25):
