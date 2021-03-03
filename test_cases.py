@@ -71,14 +71,14 @@ class TestComputeSV(unittest.TestCase):
         test_wvg = wvg([1,2,3,4,5], 8)
         total = 0
         for i in range(test_wvg.get_num_players()):
-            total += computesv.brute_force_sv(test_wvg, i)
+            total += computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
 
         self.assertEqual(round(total, 3), 1)
 
     def test_case_1(self):
         test_wvg = wvg([1,2,3,4,5], 10)
         for i in range(5):
-            brute = computesv.brute_force_sv(test_wvg, i)
+            brute = computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
             dp = computesv.compute_shapley_value(test_wvg, i)
             self.assertAlmostEqual(brute, dp, 3)
         

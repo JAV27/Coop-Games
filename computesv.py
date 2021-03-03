@@ -113,10 +113,9 @@ def get_all_subsets(arr, k):
     return all_subsets
 
 # Computes the Shapley value of player i in wvg
-def brute_force_sv(wvg, i):
+def brute_force_sv(fun, i, n):
 
     shapley_value = 0
-    n = wvg.get_num_players()
     set_minus_i = list(range(i)) + list(range(i+1,n))
 
     # All numbers of subse  ts from 0 to n-1. Player is anywhere from first to last
@@ -127,7 +126,7 @@ def brute_force_sv(wvg, i):
 
         for indiv_set in all_subsets:
 
-            if(wvg.v(indiv_set) == 0 and wvg.v(np.append(indiv_set, [i])) == 1):
+            if(fun(indiv_set) == 0 and fun(np.append(indiv_set, [i])) == 1):
                 inside_value += 1
 
         inside_value = round(inside_value / math.comb(n-1, k), 3)
