@@ -113,6 +113,10 @@ def get_all_subsets(arr, k):
     return all_subsets
 
 # Computes the Shapley value of player i in wvg
+# Takes in
+# fun: function that takes in set of players and returns value oof that coalitino
+# i: player to compute (int)
+# n: number of players in game (int)
 def brute_force_sv(fun, i, n):
 
     shapley_value = 0

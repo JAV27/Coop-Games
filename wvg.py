@@ -38,8 +38,12 @@ class wvg:
 
     # Takes in subset of players (array of indices) and returns whether that is a winning coalition (1) or not (0)
     def v(self, players):
+
         total = 0
         for i in players:
+            if i > self.num_players:
+                raise IndexError("Subsets include too many players. Check n in brute_force_sv")
+
             total += self.weights[i]
 
         if total >= self.quota:
