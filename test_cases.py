@@ -39,7 +39,6 @@ class TestWVG(unittest.TestCase):
         self.assertTrue(equality)
         self.assertEqual(1, test_wvg.get_quota())
     
-
 # Tests the create DP table function
 class TestCreateDPTable(unittest.TestCase):
     
@@ -58,6 +57,7 @@ class TestCreateDPTable(unittest.TestCase):
         equality = np.array_equal(result, correct_table)
         self.assertTrue(equality)
 
+# Tests the compute_sv snd brute_force_sv functions 
 class TestComputeSV(unittest.TestCase):
     def test_total_CSV(self):
         test_wvg = wvg([1,2,3,4,5,6,7,8,9,10], 15)
@@ -75,5 +75,12 @@ class TestComputeSV(unittest.TestCase):
 
         self.assertEqual(round(total, 3), 1)
 
+    def test_case_1(self):
+        test_wvg = wvg([1,2,3,4,5], 10)
+        for i in range(5):
+            brute = computesv.brute_force_sv(test_wvg, i)
+            dp = computesv.compute_shapley_value(test_wvg, i)
+            self.assertAlmostEqual(brute, dp, 3)
+        
 if __name__ == '__main__':
     unittest.main()

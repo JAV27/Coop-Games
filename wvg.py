@@ -35,3 +35,16 @@ class wvg:
 
     def set_quota(self, quota):
         self.quota = quota
+
+    # Takes in subset of players (array of indices) and returns whether that is a winning coalition (1) or not (0)
+    def v(self, players):
+        total = 0
+        for i in players:
+            total += self.weights[i]
+
+        if total >= self.quota:
+            return 1 
+        else: 
+            return 0
+
+

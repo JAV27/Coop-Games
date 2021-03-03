@@ -107,29 +107,27 @@ def compute_shapley_value(wvg, i):
 # arr: Set of items
 # k: size of the subsets to take
 # returns: Set of total sums for each subsets
-def get_all_subset_weights(arr, k):
-    all_subsets = np.array(list(combinations(arr, k)))
-    all_weights = [np.sum(arr) for arr in all_subsets]
+def get_all_subsets(arr, k):
+    all_subsets = np.array(list(combinations(arr, k)), dtype=int)
     
-    return all_weights
+    return all_subsets
 
 # Computes the Shapley value of player i in wvg
 def brute_force_sv(wvg, i):
 
     shapley_value = 0
-    quota = wvg.get_quota()
     n = wvg.get_num_players()
-    player_value = wvg.get_weights()[i]
-    set_minus_i = wvg.get_weights()[:i] + wvg.get_weights()[i+1:]
+    set_minus_i = list(range(i)) + list(range(i+1,n))
 
-    # All numbers of subsets from 0 to n-1. Player is anywhere from first to last
+    # All numbers of subse  ts from 0 to n-1. Player is anywhere from first to last
     for k in range(n):
         inside_value = 0
         # Every permutation of subset k
-        all_sums = get_all_subset_weights(set_minus_i, k)
+        all_subsets = get_all_subsets(set_minus_i, k)
 
-        for set_sum in all_sums:
-            if(set_sum < quota and set_sum + player_value >= quota):
+        for indiv_set in all_subsets:
+
+            if(wvg.v(indiv_set) == 0 and wvg.v(np.append(indiv_set, [i])) == 1):
                 inside_value += 1
 
         inside_value = round(inside_value / math.comb(n-1, k), 3)
