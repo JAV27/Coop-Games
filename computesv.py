@@ -129,9 +129,7 @@ def brute_force_sv(fun, i, n):
         all_subsets = get_all_subsets(set_minus_i, k)
 
         for indiv_set in all_subsets:
-
-            if(fun(indiv_set) == 0 and fun(np.append(indiv_set, [i])) == 1):
-                inside_value += 1
+            inside_value += ( fun(np.append(indiv_set, [i])) - fun(indiv_set) )
 
         inside_value = round(inside_value / math.comb(n-1, k), 3)
         shapley_value += inside_value

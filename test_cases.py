@@ -59,28 +59,31 @@ class TestCreateDPTable(unittest.TestCase):
 
 # Tests the compute_sv snd brute_force_sv functions 
 class TestComputeSV(unittest.TestCase):
-    def test_total_CSV(self):
-        test_wvg = wvg([1,2,3,4,5,6,7,8,9,10], 15)
-        total = 0
-        for i in range(test_wvg.get_num_players()):
-            total += computesv.compute_shapley_value(test_wvg, i)
-
-        self.assertEqual(round(total, 3), 1)
-
-    def test_total_brute_force(self):
+    def test_total(self):
         test_wvg = wvg([1,2,3,4,5], 8)
-        total = 0
+        totalBrute = 0
+        totalDP = 0
         for i in range(test_wvg.get_num_players()):
-            total += computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
+            totalBrute += computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
+            totalDP += computesv.compute_shapley_value(test_wvg, i)
 
-        self.assertEqual(round(total, 3), 1)
+        self.assertEqual(round(totalDP, 3), 1)
+        self.assertEqual(round(totalBrute, 3), 1)
 
-    def test_case_1(self):
+    def test_case_SVs(self):
         test_wvg = wvg([1,2,3,4,5], 10)
         for i in range(5):
             brute = computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
             dp = computesv.compute_shapley_value(test_wvg, i)
             self.assertAlmostEqual(brute, dp, 3)
-        
+
+    def test_bad_inputs(self):
+        test_wvg = wvg([1,2,3,4,5], 10)
+        with self.assertRaises(IndexError):
+            computesv.brute_force_sv(test_wvg.v, 5, test_wvg.get_num_players()+1)
+
+        with self.assertRaises(IndexError):
+            computesv.brute_force_sv(test_wvg.v, 6, test_wvg.get_num_players())
+
 if __name__ == '__main__':
     unittest.main()
