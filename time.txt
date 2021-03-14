@@ -1,0 +1,82 @@
+DP Solution Time with 6 players: 0.0008549690246582031
+BF Solution Time with 6 players: 0.0005431175231933594
+
+
+DP Solution Time with 7 players: 0.001489877700805664
+BF Solution Time with 7 players: 0.000942230224609375
+
+
+DP Solution Time with 8 players: 0.0025300979614257812
+BF Solution Time with 8 players: 0.0018188953399658203
+
+
+DP Solution Time with 9 players: 0.004099130630493164
+BF Solution Time with 9 players: 0.004395008087158203
+
+
+DP Solution Time with 10 players: 0.006409883499145508
+BF Solution Time with 10 players: 0.007479190826416016
+
+
+DP Solution Time with 11 players: 0.009411096572875977
+BF Solution Time with 11 players: 0.017348766326904297
+
+
+DP Solution Time with 12 players: 0.01366877555847168
+BF Solution Time with 12 players: 0.0334019660949707
+
+
+DP Solution Time with 13 players: 0.018496990203857422
+BF Solution Time with 13 players: 0.06753206253051758
+
+
+DP Solution Time with 14 players: 0.024885177612304688
+BF Solution Time with 14 players: 0.13461613655090332
+
+
+DP Solution Time with 15 players: 0.03412294387817383
+BF Solution Time with 15 players: 0.27840518951416016
+
+
+DP Solution Time with 16 players: 0.04335474967956543
+BF Solution Time with 16 players: 0.5969119071960449
+
+
+DP Solution Time with 17 players: 0.05600380897521973
+BF Solution Time with 17 players: 1.2242860794067383
+
+
+DP Solution Time with 18 players: 0.07182717323303223
+BF Solution Time with 18 players: 2.5255160331726074
+
+
+DP Solution Time with 19 players: 0.08842587471008301
+BF Solution Time with 19 players: 5.245032787322998
+
+
+DP Solution Time with 20 players: 0.10979986190795898
+BF Solution Time with 20 players: 10.748741865158081
+
+
+DP Solution Time with 21 players: 0.13013410568237305
+BF Solution Time with 21 players: 21.60304307937622
+
+
+DP Solution Time with 22 players: 0.1594250202178955
+BF Solution Time with 22 players: 44.59894609451294
+
+
+DP Solution Time with 23 players: 0.1904289722442627
+BF Solution Time with 23 players: 93.30865812301636
+
+
+DP Solution Time with 24 players: 0.22891497611999512
+BF Solution Time with 24 players: 190.5620150566101
+
+
+DP Solution Time with 25 players: 0.2712719440460205
+BF Solution Time with 25 players: 388.81765604019165
+
+
+DP Solution Time with 26 players: 0.3147547245025635
+BF Solution Time with 26 players: 864.7350358963013
