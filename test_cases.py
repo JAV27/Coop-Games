@@ -2,6 +2,7 @@ from wvg import wvg
 import computesv
 import unittest
 import numpy as np
+from ttg import ttg
 
 # Test the WVG class
 class TestWVG(unittest.TestCase):
@@ -84,6 +85,27 @@ class TestComputeSV(unittest.TestCase):
 
         with self.assertRaises(IndexError):
             computesv.brute_force_sv(test_wvg.v, 6, test_wvg.get_num_players())
+
+    def test_wvg_vs_ttg(self):
+        # Make sure ttg with 1 task of value 1 is same as wvg
+        test_ttg = ttg([1,2,3,4,5], [(10,1)])
+        test_wvg = wvg([1,2,3,4,5], 10)
+        sv = computesv.compute_shapley_value_ttg(test_ttg, 2)
+        sv2 = computesv.compute_shapley_value(test_wvg, 2)
+
+        self.assertEqual(sv, sv2)
+
+        # Test if value is 2 it will double shapley value
+        test_ttg = ttg([1,2,3,4,5], [(10,2)])
+        sv = computesv.compute_shapley_value_ttg(test_ttg, 2)
+        self.assertEqual(sv, 2*sv2)
+
+        # Test if it will always take the better task
+        test_ttg = ttg([1,2,3,4,5], [(10,1), (10,2)])
+        sv = computesv.compute_shapley_value_ttg(test_ttg, 2)
+        self.assertEqual(sv, 2*sv2)
+
+        # ToDo: Test complicated TTG example
 
 if __name__ == '__main__':
     unittest.main()
