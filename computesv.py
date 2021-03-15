@@ -101,8 +101,68 @@ def get_num_of_permutation(wvg, i):
 
     return num_of_permutations
 
+def get_total_marginal_value_last(ttg):
+    # Get w(N)
+    W = 0
+    for i in range(len(ttg.get_weights())):
+        W += ttg.get_weights()[i]
+    
+    # Instantiated DP table
+    table = create_DP_table(ttg.get_weights())
+    
+    total_values = np.zeros((W), dtype=np.float128)
+
+    # How many permutations where player is pivotal and weight of other players is w
+    # For every weight from q-w_of_last_player to q-1
+    for w in range(W):
+        total_values[w] = 0
+
+        # for every subset size
+        for s in range(ttg.get_num_players()):
+            # Look at table for 2nd to last player at all w and s
+            # Multiply by amount of combinations of that group of players
+            
+            total_weight_without_i = [w]
+            total_weight_with_i = [w+ttg.get_weights()[ttg.get_num_players()-1]]
+
+            total_values[w] += (ttg.v(total_weight_with_i)-ttg.v(total_weight_without_i))*float(table[ttg.get_num_players()-2][w][s])*float(np.math.factorial(s))*float(np.math.factorial(ttg.get_num_players()-s-1))
+    
+    del table
+
+    return total_values
+
+def get_total_marginal_value(ttg, i):
+    if i >= ttg.get_num_players():
+        raise IndexError("i is larger than number of players")
+    
+    a = ttg.get_weights()[i]
+    weights = ttg.get_weights()
+
+    # Swap the last player with the ith player
+    weights[i] = weights[ttg.get_num_players()-1]
+    weights[ttg.get_num_players()-1] = a
+
+    ttg.set_weights(weights)
+
+    # Compute with new player as last
+    total_values = get_total_marginal_value_last(ttg)
+
+    # Swap back to original 
+    a = ttg.get_weights()[i]
+    weights = ttg.get_weights()
+
+    weights[i] = weights[ttg.get_num_players()-1]
+    weights[ttg.get_num_players()-1] = a
+
+    return total_values
+
+
 def compute_shapley_value(wvg, i):
     return np.sum(get_num_of_permutation(wvg, i))/float(np.math.factorial(wvg.get_num_players()))
+
+def compute_shapley_value_ttg(ttg, i):
+    return np.sum(get_total_marginal_value(ttg, i))/float(np.math.factorial(ttg.get_num_players()))
+
 
 # arr: Set of items
 # k: size of the subsets to take
