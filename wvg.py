@@ -11,7 +11,6 @@ class wvg:
 
         self.quota = 1 if quota is None else quota
 
-
     # Getters
     def get_num_players(self):
         return self.num_players
@@ -41,7 +40,7 @@ class wvg:
 
         total = 0
         for i in players:
-            if i > self.num_players:
+            if i > self.num_players or i < 0:
                 raise IndexError("Subsets include too many players. Check n in brute_force_sv")
 
             total += self.weights[i]
