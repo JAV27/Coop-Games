@@ -13,14 +13,23 @@ class ttg(Game):
 
         total_player_weight = 0
         for i in players:
-            total_player_weight += i
+            total_player_weight += self.weights[i]
 
         for task in self.tasks:
             if total_player_weight >= task[0] and task[1] >= maxVal:
                 maxVal = task[1]
 
         return maxVal
-        
+
+    def v_with_total_weight(self, weight):
+        maxVal = 0
+        for task in self.tasks:
+            if weight >= task[0] and task[1] >= maxVal:
+                maxVal = task[1]
+
+        return maxVal
+
+
     def get_weights(self):
         return self.weights
         

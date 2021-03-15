@@ -122,10 +122,10 @@ def get_total_marginal_value_last(ttg):
             # Look at table for 2nd to last player at all w and s
             # Multiply by amount of combinations of that group of players
             
-            total_weight_without_i = [w]
-            total_weight_with_i = [w+ttg.get_weights()[ttg.get_num_players()-1]]
+            total_weight_without_i = w
+            total_weight_with_i = w+ttg.get_weights()[ttg.get_num_players()-1]
 
-            total_values[w] += (ttg.v(total_weight_with_i)-ttg.v(total_weight_without_i))*float(table[ttg.get_num_players()-2][w][s])*float(np.math.factorial(s))*float(np.math.factorial(ttg.get_num_players()-s-1))
+            total_values[w] += (ttg.v_with_total_weight(total_weight_with_i)-ttg.v_with_total_weight(total_weight_without_i))*float(table[ttg.get_num_players()-2][w][s])*float(np.math.factorial(s))*float(np.math.factorial(ttg.get_num_players()-s-1))
     
     del table
 
@@ -156,13 +156,11 @@ def get_total_marginal_value(ttg, i):
 
     return total_values
 
-
 def compute_shapley_value(wvg, i):
     return np.sum(get_num_of_permutation(wvg, i))/float(np.math.factorial(wvg.get_num_players()))
 
 def compute_shapley_value_ttg(ttg, i):
     return np.sum(get_total_marginal_value(ttg, i))/float(np.math.factorial(ttg.get_num_players()))
-
 
 # arr: Set of items
 # k: size of the subsets to take

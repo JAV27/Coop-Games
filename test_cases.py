@@ -107,5 +107,11 @@ class TestComputeSV(unittest.TestCase):
 
         # ToDo: Test complicated TTG example
 
+    def test_brute_force_ttg(self):
+        test_ttg = ttg([1,2,3,4,5], [(10,1)])
+        sv = computesv.brute_force_sv(test_ttg.v, 3, 5)
+        
+        self.assertEqual(sv, .25)
+
 if __name__ == '__main__':
     unittest.main()
