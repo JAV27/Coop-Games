@@ -193,3 +193,29 @@ def brute_force_sv(fun, i, n):
         shapley_value += inside_value
 
     return (shapley_value/n)
+
+def compute_shapley_value_induced_subgraph(matrix, i):
+    #Make sure matrix is mxm
+    m = 0 
+    n = 0
+
+    if type(matrix) is list:
+        matrix = np.array(matrix)
+
+    if len(matrix.shape) != 2:
+        raise Exception("Matrix must have 2 dimensions")
+
+    
+    m = matrix.shape[0]
+    n = matrix.shape[1]
+    
+    if m != n:
+        raise Exception("Matrix must have same number of rows and cols")
+
+    total = np.sum(matrix[i])
+
+    return total/2
+    
+
+    
+
