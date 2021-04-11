@@ -10,8 +10,3 @@ sv2 = computesv.brute_force_sv(test_wvg.v, 2, 5)
 print(sv)
 print(sv2)
 
-subgraph = np.array([0,0,1])
-
-for i in range(3):
-    sv = computesv.compute_shapley_value_induced_subgraph(subgraph, i)
-    print(sv)

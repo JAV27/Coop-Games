@@ -164,7 +164,7 @@ def compute_shapley_value_ttg(ttg, i):
 
 # arr: Set of items
 # k: size of the subsets to take
-# returns: Set of total sums for each subsets
+# returns: Set of all subsets
 def get_all_subsets(arr, k):
     all_subsets = np.array(list(combinations(arr, k)), dtype=int)
     
@@ -215,6 +215,31 @@ def compute_shapley_value_induced_subgraph(matrix, i):
     total = np.sum(matrix[i])
 
     return total/2
-    
 
+# Checks to see if player i is a veto player in wvg
+def check_if_veto_player_wvg(wvg, i):
+    
+    n = wvg.get_num_players()
+
+    if i >= n:
+        raise Exception("I is too large")
+
+    set_minus_i = list(range(i)) + list(range(i+1,n))
+    print(set_minus_i)
+    
+    for k in range(n):
+        all_subsets = get_all_subsets(set_minus_i, k)
+        for sub in all_subsets:
+            if wvg.v(sub) == 1:
+                return False
+
+    return True
+
+def core_exists_wvg(wvg):
+    n = wvg.get_num_players()
+    for i in range(n):
+        if check_if_veto_player_wvg(wvg, i):
+            return True
+
+    return False
     
