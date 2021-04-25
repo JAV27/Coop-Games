@@ -235,11 +235,17 @@ def check_if_veto_player_wvg(wvg, i):
 
     return True
 
+# Takes in: A WVG
+# Returns: Tuple that includes if the core exists [0] and who the veto players are [1]
 def core_exists_wvg(wvg):
     n = wvg.get_num_players()
+    exists = False
+    veto_players = []
+    
     for i in range(n):
         if check_if_veto_player_wvg(wvg, i):
-            return True
+            exists = True
+            veto_players.append(i)
 
-    return False
-    
+    return (exists, veto_players)
+
