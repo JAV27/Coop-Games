@@ -2,6 +2,7 @@ import numpy as np
 from wvg import wvg
 from itertools import combinations
 import math
+from scipy.optimize import minimize
 
 # Generates the dynamic programming table required in order to 
 # compute the Shapley value in weighted voting games.
@@ -249,3 +250,53 @@ def core_exists_wvg(wvg):
 
     return (exists, veto_players)
 
+
+# What we are trying to minimize. The sum of the players
+# Takes in: value function of a game fun, possible payout vector x [1,5,8,6,...]
+def objective(x):
+    return np.sum(x)
+
+# Creates all the linear constraints for optimization
+# Takes in: value function of a game fun, number of players n
+def create_constraints(fun, n):
+    # All the constraints
+    cons = []
+
+    # Get all subsets
+    all_subsets = []
+    for i in range(n):
+        all_subsets.append(get_all_subsets(n, i))
+    
+    # For every subset
+    for i in all_subsets:
+
+        # Create constraint of form sum(payoff to players in set) - v(players in set) >= 0
+        def constraint(x):
+            player_sum = np.sum(x)
+            return player_sum - fun(i)
+            
+        con = {'type': 'ineq', 'fun': constraint}
+        cons.append(con)
+
+    return cons
+
+# Takes in: value function of a game fun, and number of players n
+def compute_core_general(fun, n):
+    # All the constraints
+    cons = create_constraints(fun, n)
+
+    # All the bounds
+    b = (0,None)
+    bounds = (b,)*n
+
+
+    # Initial guess
+    all_players = []
+    for i in range(n):
+        all_players.append(i)
+
+    x0 = np.array([fun(all_players)]*n)
+    
+    sol = minimize(objective, x0, method='SLSQP', bounds=bounds, constraints=cons)
+    
+    return sol
