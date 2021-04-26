@@ -264,15 +264,20 @@ def create_constraints(fun, n):
 
     # Get all subsets
     all_subsets = []
-    for i in range(n):
-        all_subsets.append(get_all_subsets(n, i))
+    for i in range(n+1):
+        all_subsets_i = get_all_subsets(list(range(n)), i)
+        for j in all_subsets_i:
+            all_subsets.append(j)
     
     # For every subset
     for i in all_subsets:
-
+        
         # Create constraint of form sum(payoff to players in set) - v(players in set) >= 0
-        def constraint(x):
-            player_sum = np.sum(x)
+        def constraint(x,i=i):
+            player_sum = 0
+            for player in i:
+                player_sum += x[player]
+
             return player_sum - fun(i)
             
         con = {'type': 'ineq', 'fun': constraint}
@@ -288,7 +293,6 @@ def compute_core_general(fun, n):
     # All the bounds
     b = (0,None)
     bounds = (b,)*n
-
 
     # Initial guess
     all_players = []
