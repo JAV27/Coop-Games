@@ -10,6 +10,7 @@ sv2 = computesv.brute_force_sv(test_wvg.v, 2, 5)
 print(sv)
 print(sv2)
 
+# Example from textbook. Example 2.2
 ttg = ttg([3,4,5], [(7,500), (9,750), (11,1000)])
 sol = computesv.compute_core_general(ttg.v, ttg.get_num_players())
 print(sol)
