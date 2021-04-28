@@ -250,14 +250,15 @@ def core_exists_wvg(wvg):
 
     return (exists, veto_players)
 
-
 # What we are trying to minimize. The sum of the players
 # Takes in: value function of a game fun, possible payout vector x [1,5,8,6,...]
+# Returns sum of all payoffs to players 
 def objective(x):
     return np.sum(x)
 
 # Creates all the linear constraints for optimization
 # Takes in: value function of a game fun, number of players n
+# Returns: List of constraints 
 def create_constraints(fun, n):
     # All the constraints
     cons = []
@@ -270,15 +271,15 @@ def create_constraints(fun, n):
             all_subsets.append(j)
     
     # For every subset
-    for i in all_subsets:
+    for S in all_subsets:
         
         # Create constraint of form sum(payoff to players in set) - v(players in set) >= 0
-        def constraint(x,i=i):
+        def constraint(x,S=S):
             player_sum = 0
-            for player in i:
-                player_sum += x[player]
+            for i in S:
+                player_sum += x[i]
 
-            return player_sum - fun(i)
+            return player_sum - fun(S)
             
         con = {'type': 'ineq', 'fun': constraint}
         cons.append(con)
@@ -286,6 +287,7 @@ def create_constraints(fun, n):
     return cons
 
 # Takes in: value function of a game fun, and number of players n
+# Returns: 
 def compute_core_general(fun, n):
     # All the constraints
     cons = create_constraints(fun, n)
