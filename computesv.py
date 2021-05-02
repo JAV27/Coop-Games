@@ -286,9 +286,9 @@ def create_constraints(fun, n):
 
     return cons
 
-# Takes in: value function of a game fun, and number of players n
-# Returns: 
-def compute_core_general(fun, n):
+# Takes in: value function of a game fun, and number of players n, optimization method opt (default is SLSQP)
+# Returns: tuple of form (core exists, payoffs)
+def compute_core_general(fun, n, opt='SLSQP'):
     # All the constraints
     cons = create_constraints(fun, n)
 
@@ -301,8 +301,12 @@ def compute_core_general(fun, n):
     for i in range(n):
         all_players.append(i)
 
-    x0 = np.array([fun(all_players)]*n)
+    x0 = np.array([fun(all_players)/n]*n)
     
-    sol = minimize(objective, x0, method='SLSQP', bounds=bounds, constraints=cons)
+    sol = minimize(objective, x0, method=opt, bounds=bounds, constraints=cons)
     
-    return sol
+    core_exists = False
+    if round(sol.fun) <= fun(all_players):
+        core_exists = True
+
+    return (core_exists, sol.x)
