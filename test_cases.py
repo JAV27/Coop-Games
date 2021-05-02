@@ -1,5 +1,5 @@
 from wvg import wvg
-import computesv
+import compute_sv
 import unittest
 import numpy as np
 from ttg import ttg
@@ -46,7 +46,7 @@ class TestCreateDPTable(unittest.TestCase):
     # Tests correct output with weights array of all 0s
     def test_all_zeroes(self):
         test_wvg = wvg([0,0,0,0,0])
-        result = computesv.create_DP_table(test_wvg.weights)
+        result = compute_sv.create_DP_table(test_wvg.weights)
         correct_table = np.array(
             [
              [[1,1,0,0,0]],
@@ -65,8 +65,8 @@ class TestComputeSV(unittest.TestCase):
         totalBrute = 0
         totalDP = 0
         for i in range(test_wvg.get_num_players()):
-            totalBrute += computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
-            totalDP += computesv.compute_shapley_value(test_wvg, i)
+            totalBrute += compute_sv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
+            totalDP += compute_sv.compute_shapley_value(test_wvg, i)
 
         self.assertEqual(round(totalDP, 3), 1)
         self.assertEqual(round(totalBrute, 3), 1)
@@ -74,42 +74,42 @@ class TestComputeSV(unittest.TestCase):
     def test_case_SVs(self):
         test_wvg = wvg([1,2,3,4,5], 10)
         for i in range(5):
-            brute = computesv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
-            dp = computesv.compute_shapley_value(test_wvg, i)
+            brute = compute_sv.brute_force_sv(test_wvg.v, i, test_wvg.get_num_players())
+            dp = compute_sv.compute_shapley_value(test_wvg, i)
             self.assertAlmostEqual(brute, dp, 3)
 
     def test_bad_inputs(self):
         test_wvg = wvg([1,2,3,4,5], 10)
         with self.assertRaises(IndexError):
-            computesv.brute_force_sv(test_wvg.v, 5, test_wvg.get_num_players()+1)
+            compute_sv.brute_force_sv(test_wvg.v, 5, test_wvg.get_num_players()+1)
 
         with self.assertRaises(IndexError):
-            computesv.brute_force_sv(test_wvg.v, 6, test_wvg.get_num_players())
+            compute_sv.brute_force_sv(test_wvg.v, 6, test_wvg.get_num_players())
 
     def test_wvg_vs_ttg(self):
         # Make sure ttg with 1 task of value 1 is same as wvg
         test_ttg = ttg([1,2,3,4,5], [(10,1)])
         test_wvg = wvg([1,2,3,4,5], 10)
-        sv = computesv.compute_shapley_value_ttg(test_ttg, 2)
-        sv2 = computesv.compute_shapley_value(test_wvg, 2)
+        sv = compute_sv.compute_shapley_value_ttg(test_ttg, 2)
+        sv2 = compute_sv.compute_shapley_value(test_wvg, 2)
 
         self.assertEqual(sv, sv2)
 
         # Test if value is 2 it will double shapley value
         test_ttg = ttg([1,2,3,4,5], [(10,2)])
-        sv = computesv.compute_shapley_value_ttg(test_ttg, 2)
+        sv = compute_sv.compute_shapley_value_ttg(test_ttg, 2)
         self.assertEqual(sv, 2*sv2)
 
         # Test if it will always take the better task
         test_ttg = ttg([1,2,3,4,5], [(10,1), (10,2)])
-        sv = computesv.compute_shapley_value_ttg(test_ttg, 2)
+        sv = compute_sv.compute_shapley_value_ttg(test_ttg, 2)
         self.assertEqual(sv, 2*sv2)
 
         # ToDo: Test complicated TTG example
 
     def test_brute_force_ttg(self):
         test_ttg = ttg([1,2,3,4,5], [(10,1)])
-        sv = computesv.brute_force_sv(test_ttg.v, 3, 5)
+        sv = compute_sv.brute_force_sv(test_ttg.v, 3, 5)
         
         self.assertEqual(sv, .25)
 
